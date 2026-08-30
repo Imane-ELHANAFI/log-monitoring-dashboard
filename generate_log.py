@@ -2,12 +2,12 @@ import random
 import os 
 from datetime import datetime, timedelta 
 
-IPS_NORMALES = ["192.168.1.5", "10.0.0.5", "172.16.0.12", "192.168.1.20"]
+IPS_NORMALES = [f"192.168.1.{i}" for i in range(2, 40)]
 IPS_SUSPECTES = ["203.0.113.5", "198.51.100.23"]
 
 HTTP_METHODES = ["GET", "POST", "PUT", "DELETE"]
 
-URLS_NORMALES = ["/accueil", "/contact", "/apropos"]
+URLS_NORMALES = ["/accueil", "/contact", "/apropos", "/produits", "/blog", "/panier"]
 URLS_SENSIBLES = ["/admin", "/.env"]
 
 CODES_NORMAUX = [200, 201]
@@ -39,7 +39,7 @@ lignes = []
 for i in range(100):
     est_suspect = random.random() < 0.1
     ligne = generer_ligne(suspect=est_suspect)
-    lignes.append(ligne)
+    lignes.append(ligne)  
 
 
 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+
+        <div class="topbar">
+            <h1>Tableau de bord des logs</h1>
+            <a href="/add-log" class="btn-ghost">+ Nouveau fichier</a>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="label">Total des requêtes</div>
+                <div class="value">{{ nombre_lignes }}</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="label">IPs suspectes</div>
+                <div class="value">{{ nombre_suspects }}</div>
+            </div>
+        </div>
+
+        <form method="GET" action="/dashboard" class="filters">
+            <input type="text" name="ip" placeholder="Rechercher une IP">
+            <label>
+                <input type="checkbox" name="suspect" value="oui">
+                Suspects uniquement
+            </label>
+            <button type="submit">Filtrer</button>
+        </form>
+
+        <div class="chart-box">
+            <h2>Répartition des codes de réponse</h2>
+            <canvas id="graphiqueCodes" data-stats='{{ stats_codes | tojson }}'></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h2>Recommandations de sécurité</h2>
+            {% for reco in recommandations %}
+            <div style="margin-bottom: 15px; padding-left: 12px; border-left: 3px solid var(--link);">
+                <strong>{{ reco.titre }}</strong>
+                <p style="color: var(--text-dim); margin: 4px 0 0 0;">{{ reco.texte }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <table>
+            <tr>
+                <th>IP</th>
+                <th>Date</th>
+                <th>Méthode</th>
+                <th>URL</th>
+                <th>Code</th>
+                <th>Statut</th>
+            </tr>
+            {% for ligne in logs %}
+            <tr class="{{ 'suspect-row' if ligne.suspect else '' }}">
+                <td>{{ ligne.ip }}</td>
+                <td>{{ ligne.date }}</td>
+                <td>{{ ligne.methode }}</td>
+                <td>{{ ligne.url }}</td>
+                <td>{{ ligne.code }}</td>
+                <td>
+                    {% if ligne.suspect %}
+                        <span class="badge danger">Suspect</span>
+                    {% else %}
+                        <span class="badge ok">Normal</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a href="/" class="btn-ghost" style="margin-top: 20px;">← Retour à l'accueil</a>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='graphique.js') }}"></script>
+</body>
+</html>

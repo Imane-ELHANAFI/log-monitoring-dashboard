@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter un fichier de log</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="upload-box">
+    <h1>Ajouter un fichier de log</h1>
+    <p>Sélectionnez un fichier .log ou .txt à analyser.</p>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="monFichier">
+        <button type="submit" class="btn">Analyser le fichier</button>
+    </form>
+    <a href="/" class="btn-ghost">← Retour à l'accueil</a>
+</div>
+</body>
+</html>
